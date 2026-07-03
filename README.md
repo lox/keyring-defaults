@@ -1,6 +1,6 @@
 keyring-defaults
 ================
-[![CI](https://github.com/lox/keyring-defaults/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/lox/keyring-defaults/actions/workflows/test.yml)
+[![CI](https://github.com/lox/keyring-defaults/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/lox/keyring-defaults/actions/workflows/test.yml)
 [![Go Reference](https://pkg.go.dev/badge/github.com/lox/keyring-defaults.svg)](https://pkg.go.dev/github.com/lox/keyring-defaults)
 
 Default first-party provider list for [`github.com/lox/keyring/v2`](https://github.com/lox/keyring).
