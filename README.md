@@ -27,19 +27,38 @@ ctx := context.Background()
 
 ring, err := keyring.Open(ctx,
 	keyring.WithServiceName("example"),
-	keyring.WithProviders(defaults.Providers(
-		keyring.FileProvider(
-			keyring.FileDir("/path/to/keyring"),
-			keyring.FilePrompt(keyring.FixedStringPrompt("passphrase")),
-		),
-	)...),
+	keyring.WithProviders(defaults.Providers()...),
+)
+```
+
+Pass application-owned fallbacks as extra providers:
+
+```go
+providers := defaults.Providers(
+	keyring.FileProvider(
+		keyring.FileDir("/path/to/keyring"),
+		keyring.FilePrompt(keyring.FixedStringPrompt("passphrase")),
+	),
+)
+```
+
+Applications that need explicit macOS Keychain trust policy can override the
+default keychain provider without changing its position:
+
+```go
+providers := defaults.Providers(
+	defaults.KeychainTrustApplication(false),
+	keyring.FileProvider(
+		keyring.FileDir("/path/to/keyring"),
+		keyring.FilePrompt(keyring.FixedStringPrompt("passphrase")),
+	),
 )
 ```
 
 `Providers` returns providers in this order:
 
 1. Windows Credential Manager
-2. macOS Keychain with `TrustApplication(false)`
+2. macOS Keychain
 3. Secret Service
 4. KWallet
 5. Linux keyctl
