@@ -38,3 +38,31 @@ func TestProvidersOrder(t *testing.T) {
 		t.Fatalf("Providers backends = %v, want %v", backends, want)
 	}
 }
+
+func TestKeychainTrustApplicationKeepsProviderOrder(t *testing.T) {
+	got := Providers(KeychainTrustApplication(false))
+
+	backends := make([]keyring.Backend, 0, len(got))
+	keychainCount := 0
+	for _, provider := range got {
+		backends = append(backends, provider.Backend)
+		if provider.Backend == keyring.KeychainBackend {
+			keychainCount++
+		}
+	}
+
+	want := []keyring.Backend{
+		keyring.WinCredBackend,
+		keyring.KeychainBackend,
+		keyring.SecretServiceBackend,
+		keyring.KWalletBackend,
+		keyring.KeyCtlBackend,
+		keyring.PassBackend,
+	}
+	if !slices.Equal(backends, want) {
+		t.Fatalf("Providers backends = %v, want %v", backends, want)
+	}
+	if keychainCount != 1 {
+		t.Fatalf("expected one keychain provider, got %d", keychainCount)
+	}
+}
